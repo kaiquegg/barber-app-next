@@ -1,11 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -45,7 +40,6 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-
 .dark {
   --background: oklch(0.122 0.018 265.17);
   --foreground: oklch(0.954 0.032 246.42);
@@ -76,7 +70,6 @@
   --ring: oklch(0.838 0.102 255.64);
 
   --radius: 0.5rem;
-
 }
 
 @layer base {

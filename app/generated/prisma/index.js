@@ -160,7 +160,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\kaiqu\\Downloads\\bagulho feito\\FullStack Club\\test\\BarbaFlow-main\\app\\generated\\prisma",
+      "value": "C:\\Users\\kaiqu\\Downloads\\bagulho feito\\FullStack Club\\barber-app-next\\app\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -174,7 +174,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\kaiqu\\Downloads\\bagulho feito\\FullStack Club\\test\\BarbaFlow-main\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\kaiqu\\Downloads\\bagulho feito\\FullStack Club\\barber-app-next\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -188,6 +188,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

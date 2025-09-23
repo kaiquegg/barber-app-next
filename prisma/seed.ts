@@ -133,7 +133,7 @@ async function seedDatabase() {
       for (const service of services) {
         if (!isValidUrl(service.imageUrl)) {
           throw new Error(
-            `URL inválida para serviço ${service.name}: ${service.imageUrl}`
+            `URL inválida para serviço ${service.name}: ${service.imageUrl}`,
           );
         }
 
