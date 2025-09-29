@@ -11,8 +11,6 @@ import BarbershopItem from "./components/barbershop-item";
 
 const Home = async () => {
   const barbershops = await db.barberShop.findMany({});
-  console.log({ barbershops });
-
   return (
     <div>
       <Header />
@@ -47,7 +45,7 @@ const Home = async () => {
           <CardContent className="flex justify-between p-0">
             {/* left */}
             <div className="flex flex-col gap-2 py-5 pl-5">
-              <Badge className="w-fit">Confirmado</Badge>
+              <Badge className="w-fit rounded-2xl">Confirmado</Badge>
 
               <h3 className="font-semibold">Corte de Cabelo</h3>
 
@@ -70,10 +68,11 @@ const Home = async () => {
         <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
           Recomendados
         </h2>
-
-        {barbershops.map((barbershop) => (
-          <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-        ))}
+        <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+          {barbershops.map((barbershop) => (
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
 
         {/* FIM DIV P-5 */}
       </div>
