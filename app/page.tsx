@@ -4,10 +4,10 @@ import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import Image from "next/image";
 import { Card, CardContent } from "./components/ui/card";
-import { Badge } from "./components/ui/badge";
-import { Avatar, AvatarImage } from "./components/ui/avatar";
 import { db } from "./lib/prisma";
 import BarbershopItem from "./components/barbershop-item";
+import quickSearchOptions from "./constants/search";
+import BookingItem from "./components/booking-item";
 
 const Home = async () => {
   const barbershops = await db.barberShop.findMany({});
@@ -16,6 +16,7 @@ const Home = async () => {
       name: "desc",
     },
   });
+
   return (
     <div>
       <Header />
@@ -33,41 +34,17 @@ const Home = async () => {
         {/* Busca Rapida */}
 
         <div className="mt-6 flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
-          <Button className="gap-1" variant="secondary">
-            <Image alt="Cabelo" src="/cabelo.svg" width={16} height={16} />
-            Cabelo
-          </Button>
-          <Button className="gap-1" variant="secondary">
-            <Image alt="Barba" src="/barba.svg" width={16} height={16} />
-            Barba
-          </Button>
-          <Button className="gap-1" variant="secondary">
-            <Image
-              alt="Acabamento"
-              src="/Acabamento.svg"
-              width={16}
-              height={16}
-            />
-            Acabamento
-          </Button>
-          <Button className="gap-1" variant="secondary">
-            <Image
-              alt="Hidratação"
-              src="/hidratacao.svg"
-              width={16}
-              height={16}
-            />
-            Hidratação
-          </Button>
-          <Button className="gap-1" variant="secondary">
-            <Image
-              alt="Sobrancelha"
-              src="/sobrancelha.svg"
-              width={16}
-              height={16}
-            />
-            Sobrancelha
-          </Button>
+          {quickSearchOptions.map((option) => (
+            <Button className="gap-1" variant="secondary" key={option.title}>
+              <Image
+                alt={option.title}
+                src={option.imageURL}
+                width={16}
+                height={16}
+              />
+              {option.title}
+            </Button>
+          ))}
         </div>
 
         {/* Image */}
@@ -82,42 +59,18 @@ const Home = async () => {
 
         {/* Appointment */}
 
-        <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
-          Agendamentos
-        </h2>
+        <BookingItem />
 
-        <Card>
-          <CardContent className="flex justify-between p-0">
-            {/* left */}
-            <div className="flex flex-col gap-2 py-5 pl-5">
-              <Badge className="w-fit rounded-2xl">Confirmado</Badge>
-
-              <h3 className="font-semibold">Corte de Cabelo</h3>
-
-              <div className="flex items-center gap-2">
-                <Avatar className="h-6 w-6">
-                  <AvatarImage src=" https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png" />
-                </Avatar>
-                <p className="text-xs">Barbearia BH</p>
-              </div>
-            </div>
-
-            {/* right */}
-            <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
-              <p className="text-sm">Agosto</p>
-              <p className="text-2xl">30</p>
-              <p className="text-sm">20:00</p>
-            </div>
-          </CardContent>
-        </Card>
         <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
           Recomendados
         </h2>
+
         <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
           {barbershops.map((barbershop) => (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
+
         <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
           Populares
         </h2>
