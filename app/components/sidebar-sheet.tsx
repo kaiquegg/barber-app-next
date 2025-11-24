@@ -1,12 +1,25 @@
+"use client";
+
 import { Button } from "./ui/button";
-import { Calendar1Icon, HomeIcon, LogOutIcon } from "lucide-react";
+import { Calendar1Icon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react";
 import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 import quickSearchOptions from "../constants/search";
-import { Avatar, AvatarImage } from "./ui/avatar";
+// import { Avatar, AvatarImage } from "./ui/avatar";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { signIn } from "next-auth/react";
 
 const SidebarButton = () => {
+  const handleLoginWithGoogleClick = () => signIn("google");
+
   return (
     <SheetContent className="overflow-y-auto">
       <SheetHeader>
@@ -15,14 +28,43 @@ const SidebarButton = () => {
 
       {/* user data  */}
       <div className="flex items-center gap-3 border-b border-solid py-5">
-        <Avatar>
+        <h2 className="font-bold">Olá. Faça seu login!</h2>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="icon">
+              <LogInIcon />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="w-[90%]">
+            <DialogHeader>
+              <DialogTitle>Faça seu login na plataforma</DialogTitle>
+              <DialogDescription>
+                Conecte-se utilizando uma conta Google.
+              </DialogDescription>
+            </DialogHeader>
+            <Button
+              className="gap-1"
+              variant={"outline"}
+              onClick={handleLoginWithGoogleClick}
+            >
+              <Image
+                alt="Fazer login com o Google"
+                src={"./google.svg"}
+                width={18}
+                height={18}
+              />
+              Continuar com Google
+            </Button>
+          </DialogContent>
+        </Dialog>
+        {/* <Avatar>
           <AvatarImage src={"./logo.png"} />
         </Avatar>
 
         <div>
           <p className="font-medium">Kaíque Egg</p>
           <p className="text-muted-foreground text-xs">kaiquegg2@hotmail.com</p>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex flex-col gap-2 border-b border-solid py-5">
