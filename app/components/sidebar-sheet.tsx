@@ -20,6 +20,7 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 
 const SidebarButton = () => {
   const { data } = useSession();
+
   const handleLoginWithGoogleClick = () => signIn("google");
   const handleLogOutClick = () => signOut();
 
