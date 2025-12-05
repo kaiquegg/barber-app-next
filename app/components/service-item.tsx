@@ -25,7 +25,7 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
           <h3 className="text-sm font-semibold">{service.name}</h3>
           <p className="text-sm text-gray-400">{service.description}</p>
           {/* Price and button */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <p className="text-primary text-sm font-bold">
               {Intl.NumberFormat("pt-BR", {
                 style: "currency",

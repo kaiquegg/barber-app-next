@@ -97,14 +97,17 @@ const SidebarButton = () => {
             key={option.title}
             className="justify-start gap-2"
             variant="ghost"
+            asChild
           >
-            <Image
-              alt={option.title}
-              src={option.imageURL}
-              height={18}
-              width={18}
-            />
-            {option.title}
+            <Link href={`/barbershops?search=${option.title}`}>
+              <Image
+                alt={option.title}
+                src={option.imageURL}
+                height={18}
+                width={18}
+              />
+              {option.title}
+            </Link>
           </Button>
         ))}
       </div>

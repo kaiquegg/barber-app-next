@@ -12,15 +12,29 @@ interface BarbershopsPageProps {
 const BarbershopsPage = async ({ searchParams }: BarbershopsPageProps) => {
   const barbershops = await db.barberShop.findMany({
     where: {
-      name: {
-        contains: searchParams.search,
-        mode: "insensitive",
-      },
+      OR: [
+        {
+          name: {
+            contains: searchParams.search,
+            mode: "insensitive",
+          },
+        },
+        {
+          services: {
+            some: {
+              name: {
+                contains: searchParams.search,
+                mode: "insensitive",
+              },
+            },
+          },
+        },
+      ],
     },
   });
 
   return (
-    <div className="">
+    <div>
       <Header />
 
       <div className="my-6 px-5">
