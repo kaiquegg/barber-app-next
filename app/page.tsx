@@ -7,8 +7,11 @@ import quickSearchOptions from "./constants/search";
 import BookingItem from "./components/booking-item";
 import Search from "./components/search";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./lib/auth";
 
 const Home = async () => {
+  const session = await getServerSession(authOptions);
   const barbershops = await db.barberShop.findMany({});
   const popularBarbershops = await db.barberShop.findMany({
     orderBy: {
@@ -16,11 +19,33 @@ const Home = async () => {
     },
   });
 
+  const confirmedBookings = session?.user
+    ? await db.booking.findMany({
+        where: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          userId: (session.user as any).id,
+          date: {
+            gte: new Date(),
+          },
+        },
+        include: {
+          service: {
+            include: {
+              barbershop: true,
+            },
+          },
+        },
+        orderBy: {
+          date: "asc",
+        },
+      })
+    : [];
+
   return (
     <div>
       <Header />
       <div className="p-5">
-        <h2 className="text-xl font-bold">Olá, Usuário(a)!</h2>
+        <h2 className="text-xl font-bold">Olá, fodase</h2>
         <p>Quarta-feira, 27 de agosto.</p>
         {/* INPUT DE BUSCA */}
         <div className="mt-6">
@@ -62,7 +87,15 @@ const Home = async () => {
 
         {/* Appointment */}
 
-        <BookingItem />
+        <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
+          Agendamentos
+        </h2>
+
+        <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          {confirmedBookings.map((booking) => (
+            <BookingItem key={booking.id} booking={booking} />
+          ))}
+        </div>
 
         <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
           Recomendados

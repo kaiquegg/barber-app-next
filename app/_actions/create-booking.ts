@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "../lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../lib/auth";
 
 interface CreateBookingParams {
   serviceId: string;
@@ -16,7 +18,13 @@ export const createBooking = async ({
   barbershopId,
   date,
 }: CreateBookingParams) => {
-  return await db.booking.create({
+  const user = await getServerSession(authOptions);
+
+  if (!user) {
+    throw new Error("Você deve estar logado para criar uma reserva.");
+  }
+
+  await db.booking.create({
     data: {
       serviceId,
       userId,
