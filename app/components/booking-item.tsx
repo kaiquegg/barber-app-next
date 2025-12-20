@@ -6,13 +6,16 @@ import { Card, CardContent } from "./ui/card";
 import { ptBR } from "date-fns/locale";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
 import Image from "next/image";
 import PhoneItem from "./phone-item";
+import { Button } from "./ui/button";
 
 interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{
@@ -30,6 +33,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
     service: { barbershop },
   } = booking;
   const isConfirmed = isFuture(booking.date);
+
   return (
     <Sheet>
       <SheetTrigger className="w-full">
@@ -143,6 +147,21 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             ))}
           </div>
         </div>
+        <SheetFooter className="mt-6">
+          <div className="flex items-center gap-3">
+            <SheetClose asChild>
+              <Button variant="outline" className="w-full">
+                Voltar
+              </Button>
+            </SheetClose>
+
+            {isConfirmed && (
+              <Button className="w-full bg-red-800" variant="destructive">
+                Cancelar Reserva
+              </Button>
+            )}
+          </div>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
