@@ -15,7 +15,7 @@ import {
 import { Calendar } from "./ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { format, set } from "date-fns";
+import { format, isPast, isToday, set } from "date-fns";
 import { useSession } from "next-auth/react";
 import { createBooking } from "../_actions/create-booking";
 import { toast } from "sonner";
@@ -28,6 +28,11 @@ interface ServiceItemProps {
   barbershop: Pick<BarberShop, "id" | "name">;
 }
 
+interface GetTimeListProps {
+  bookings: Booking[];
+  selectedDay: Date;
+}
+
 const TIME_LIST: string[] = Array.from({ length: (18 - 9) * 2 + 1 }, (_, i) => {
   const totalMinutes = 9 * 60 + i * 30;
   const hh = Math.floor(totalMinutes / 60)
@@ -37,10 +42,16 @@ const TIME_LIST: string[] = Array.from({ length: (18 - 9) * 2 + 1 }, (_, i) => {
   return `${hh}:${mm}`;
 });
 
-const getTimeList = (bookings: Booking[]) => {
+const getTimeList = ({ bookings, selectedDay }: GetTimeListProps) => {
   return TIME_LIST.filter((time) => {
     const hour = Number(time.split(":")[0]);
     const minutes = Number(time.split(":")[1]);
+
+    const timeIsOnThePast = isPast(set(new Date(), { hours: hour, minutes }));
+
+    if (timeIsOnThePast && isToday(selectedDay)) {
+      return false;
+    }
 
     const hasBookingOnCurrentTime = bookings.some(
       (booking) =>
@@ -186,7 +197,10 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 
                   {selectedDay && (
                     <div className="flex gap-3 overflow-x-auto border-b border-solid px-5 pb-5 [&::-webkit-scrollbar]:hidden">
-                      {getTimeList(dayBookings).map((time) => (
+                      {getTimeList({
+                        bookings: dayBookings,
+                        selectedDay,
+                      }).map((time) => (
                         <Button
                           key={time}
                           variant={
