@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { BarberShop, BarbershopService, Booking } from "../generated/prisma";
+import { Booking } from "../generated/prisma";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import {
@@ -24,8 +24,17 @@ import { Dialog, DialogContent } from "./ui/dialog";
 import SignInDialog from "./sign-in-dialog";
 
 interface ServiceItemProps {
-  service: BarbershopService;
-  barbershop: Pick<BarberShop, "id" | "name">;
+  service: {
+    id: string;
+    name: string;
+    description: string;
+    imageUrl: string;
+    price: number;
+  };
+  barbershop: {
+    id: string;
+    name: string;
+  };
 }
 
 interface GetTimeListProps {
@@ -131,7 +140,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
       });
       handleBookingSheetIsOpen();
       toast.success(
-        `"Agendamento de ${service.name.toLocaleLowerCase()} criado com sucesso!"`,
+        `Agendamento de ${service.name.toLocaleLowerCase()} criado com sucesso!`,
       );
     } catch (error) {
       console.error(error);

@@ -10,16 +10,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface BarbershopPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const BarbershopPage = async ({ params }: BarbershopPageProps) => {
+  const { id } = await params;
+
   // call db
   const barbershop = await db.barberShop.findUnique({
     where: {
-      id: params.id,
+      id,
     },
     include: {
       services: true,
@@ -28,6 +30,14 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
   if (!barbershop) {
     return notFound();
   }
+
+  const serializedServices = barbershop.services.map((service) => ({
+    id: service.id,
+    name: service.name,
+    description: service.description,
+    imageUrl: service.imageUrl,
+    price: Number(service.price),
+  }));
 
   return (
     <div>
@@ -83,11 +93,14 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       <div className="space-y-3 border-b border-solid p-5">
         <h2 className="text-xs font-bold text-gray-400 uppercase">Serviços</h2>
         <div className="space-y-3">
-          {barbershop.services.map((service) => (
+          {serializedServices.map((service) => (
             <ServiceItem
               key={service.id}
               service={service}
-              barbershop={barbershop}
+              barbershop={{
+                id: barbershop.id,
+                name: barbershop.name,
+              }}
             />
           ))}
         </div>

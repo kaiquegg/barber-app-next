@@ -1,7 +1,6 @@
-"use client";
+﻿"use client";
 
 import { format, isFuture } from "date-fns";
-import { Prisma } from "../generated/prisma";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Card, CardContent } from "./ui/card";
@@ -32,22 +31,30 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 interface BookingItemProps {
-  booking: Prisma.BookingGetPayload<{
-    include: {
-      service: {
-        include: { barbershop: true };
+  booking: {
+    id: string;
+    date: string;
+    service: {
+      name: string;
+      price: number;
+      barbershop: {
+        name: string;
+        imageUrl: string;
+        address: string;
+        phone: string[];
       };
     };
-  }>;
+  };
 }
 
 // TODO: Receive as props
 const BookingItem = ({ booking }: BookingItemProps) => {
   const [isSheetsOpen, setIsSheetsOpen] = useState(false);
+  const bookingDate = new Date(booking.date);
   const {
     service: { barbershop },
   } = booking;
-  const isConfirmed = isFuture(booking.date);
+  const isConfirmed = isFuture(bookingDate);
 
   const handleCancelBooking = async () => {
     try {
@@ -91,15 +98,15 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             {/* right */}
             <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
               <p className="text-sm capitalize">
-                {format(booking.date, "MMMM", { locale: ptBR })}
+                {format(bookingDate, "MMMM", { locale: ptBR })}
               </p>
               <p className="text-2xl">
                 {" "}
-                {format(booking.date, "dd", { locale: ptBR })}
+                {format(bookingDate, "dd", { locale: ptBR })}
               </p>
               <p className="text-sm">
                 {" "}
-                {format(booking.date, "HH:mm", { locale: ptBR })}
+                {format(bookingDate, "HH:mm", { locale: ptBR })}
               </p>
             </div>
           </CardContent>
@@ -152,7 +159,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
               <div className="flex items-center justify-between">
                 <h2 className="text-sm text-gray-400">Data</h2>
                 <p className="text-sm">
-                  {format(booking.date, "d 'de' MMMM", {
+                  {format(bookingDate, "d 'de' MMMM", {
                     locale: ptBR,
                   })}
                 </p>
@@ -160,7 +167,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
               <div className="flex items-center justify-between">
                 <h2 className="text-sm text-gray-400">Horário</h2>
                 <p className="text-sm">
-                  {format(booking.date, "HH:mm", {
+                  {format(bookingDate, "HH:mm", {
                     locale: ptBR,
                   })}
                 </p>

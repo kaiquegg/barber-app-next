@@ -47,29 +47,58 @@ const Bookings = async () => {
       },
     },
   });
+  const serializedConfirmedBookings = confirmedBookings.map((booking) => ({
+    id: booking.id,
+    date: booking.date.toISOString(),
+    service: {
+      name: booking.service.name,
+      price: Number(booking.service.price),
+      barbershop: {
+        name: booking.service.barbershop.name,
+        imageUrl: booking.service.barbershop.imageUrl,
+        address: booking.service.barbershop.address,
+        phone: booking.service.barbershop.phone,
+      },
+    },
+  }));
+
+  const serializedConcludedBookings = concludedBookings.map((booking) => ({
+    id: booking.id,
+    date: booking.date.toISOString(),
+    service: {
+      name: booking.service.name,
+      price: Number(booking.service.price),
+      barbershop: {
+        name: booking.service.barbershop.name,
+        imageUrl: booking.service.barbershop.imageUrl,
+        address: booking.service.barbershop.address,
+        phone: booking.service.barbershop.phone,
+      },
+    },
+  }));
 
   return (
     <>
       <Header />
       <div className="space-y-3 p-5">
         <h1 className="bold text-xl">Agendamentos</h1>
-        {confirmedBookings.length > 0 && (
+        {serializedConfirmedBookings.length > 0 && (
           <>
             <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
               Confirmados
             </h2>
-            {confirmedBookings.map((booking) => (
+            {serializedConfirmedBookings.map((booking) => (
               <BookingItem key={booking.id} booking={booking} />
             ))}
           </>
         )}
 
-        {concludedBookings.length > 0 && (
+        {serializedConcludedBookings.length > 0 && (
           <>
             <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
               Finalizados
             </h2>
-            {concludedBookings.map((booking) => (
+            {serializedConcludedBookings.map((booking) => (
               <BookingItem key={booking.id} booking={booking} />
             ))}
           </>

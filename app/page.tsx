@@ -42,6 +42,20 @@ const Home = async () => {
         },
       })
     : [];
+  const serializedConfirmedBookings = confirmedBookings.map((booking) => ({
+    id: booking.id,
+    date: booking.date.toISOString(),
+    service: {
+      name: booking.service.name,
+      price: Number(booking.service.price),
+      barbershop: {
+        name: booking.service.barbershop.name,
+        imageUrl: booking.service.barbershop.imageUrl,
+        address: booking.service.barbershop.address,
+        phone: booking.service.barbershop.phone,
+      },
+    },
+  }));
 
   return (
     <div>
@@ -100,7 +114,7 @@ const Home = async () => {
         </h2>
 
         <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {confirmedBookings.map((booking) => (
+          {serializedConfirmedBookings.map((booking) => (
             <BookingItem key={booking.id} booking={booking} />
           ))}
         </div>
