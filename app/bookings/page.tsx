@@ -82,6 +82,11 @@ const Bookings = async () => {
       <Header />
       <div className="space-y-3 p-5">
         <h1 className="bold text-xl">Agendamentos</h1>
+        {serializedConfirmedBookings.length === 0 && (
+          <p className="text-sm text-gray-400">
+            Nenhum agendamento encontrado.
+          </p>
+        )}
         {serializedConfirmedBookings.length > 0 && (
           <>
             <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
