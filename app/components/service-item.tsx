@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { getBookings } from "../_actions/get-bookings";
 import { Dialog, DialogContent } from "./ui/dialog";
 import SignInDialog from "./sign-in-dialog";
+import { useRouter } from "next/navigation";
 
 interface ServiceItemProps {
   service: {
@@ -76,8 +77,10 @@ const getTimeList = ({ bookings, selectedDay }: GetTimeListProps) => {
 };
 
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
-  const [signInDialogIsOpen, setSignInDialogIsOpen] = useState(false);
   const { data } = useSession();
+  const router = useRouter();
+
+  const [signInDialogIsOpen, setSignInDialogIsOpen] = useState(false);
 
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -139,9 +142,14 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         date: newDate,
       });
       handleBookingSheetIsOpen();
-      toast.success(
-        `Agendamento de ${service.name.toLocaleLowerCase()} criado com sucesso!`,
-      );
+      toast.success(`Agendamento de ${service.name} criado com sucesso!`, {
+        action: {
+          label: "Agendamentos >",
+          onClick: () => {
+            router.push("/bookings");
+          },
+        },
+      });
     } catch (error) {
       console.error(error);
       toast.error("Erro ao criar agendamento. Tente novamente.");
@@ -162,7 +170,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
           </div>
 
           {/* right */}
-          <div className="space-y-2">
+          <div className="flex-1 space-y-2">
             <h3 className="text-sm font-semibold">{service.name}</h3>
             <p className="text-sm text-gray-400">{service.description}</p>
             {/* Price and button */}
