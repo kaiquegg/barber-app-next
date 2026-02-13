@@ -62,7 +62,7 @@ const Home = async () => {
       <Header />
       <div className="p-5">
         <h2 className="text-xl font-bold">
-          Olá, {session?.user ? session?.user?.name + "!" : "bem-vindo!"}
+          Olá, {session?.user ? session?.user?.name + "!" : "Faça seu login!"}
         </h2>
         <p>
           {format(new Date(), "EEEE, dd 'de' MMMM", {
@@ -98,7 +98,7 @@ const Home = async () => {
         </div>
 
         {/* Image */}
-        <div className="relative mt-6 h-[150px] w-full">
+        <div className="relative mt-6 h-[150px] w-full md:hidden">
           <Image
             alt="Agende nos melhores"
             src="/banner-01.png"
