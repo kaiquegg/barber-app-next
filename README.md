@@ -36,5 +36,25 @@ O fluxo cobre desde autenticação do usuário até criação e gestão de reser
 - Tratamento de dados entre Server e Client Components no Next.js
 - Ajustes de build/deploy em ambiente real (Vercel)
 
+## 🛠️ Rodando localmente
+```bash
+git clone https://github.com/kaiquegg/barber-app-next
+cd barber-app-next
+npm install
+```
+
+Crie um arquivo `.env` com as variáveis:
+```env
+DATABASE_URL=""
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+NEXTAUTH_SECRET=""
+NEXTAUTH_URL="http://localhost:3000"
+```
+```bash
+npx prisma migrate dev
+npm run dev
+```
+
 ## 🌐 Acesse o Projeto
 **[https://barber-app-next.vercel.app](https://barber-app-next.vercel.app)**
